@@ -3,7 +3,6 @@ import { Package } from "lucide-react";
 import { useState } from "react";
 import App from "./App";
 import ListOfOrders from "./components/ListOfOrders";
-import { ENDPOINT_URL } from "./constants";
 
 function Dashboard() {
     const [showOrdersList, setShowOrdersList] = useState(false);
