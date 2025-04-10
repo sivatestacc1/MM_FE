@@ -1,1 +1,1 @@
-export const ENDPOINT_URL = process.env.API_ENDPOINT || 'http://localhost:3000';
+export const ENDPOINT_URL = import.meta.env.VITE_API_ENDPOINT || 'http://localhost:3000';

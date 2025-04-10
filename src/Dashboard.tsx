@@ -3,6 +3,7 @@ import { Package } from "lucide-react";
 import { useState } from "react";
 import App from "./App";
 import ListOfOrders from "./components/ListOfOrders";
+import { ENDPOINT_URL } from "./constants";
 
 function Dashboard() {
     const [showOrdersList, setShowOrdersList] = useState(false);
@@ -29,7 +30,7 @@ function Dashboard() {
                         <h4 className="mt-2 text-1xl font-bold text-gray-900">Select Menu</h4>
                         <button
                             key={"orders"}
-                            onClick={() => {setShowOrdersList(true);}}
+                            onClick={() => { setShowOrdersList(true);}}
                             className={`flex-1 text-center py-2 mx-2 rounded-md bg-blue-500 text-white`}
                         >
                             View Orders
