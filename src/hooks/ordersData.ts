@@ -1,0 +1,28 @@
+import { useEffect, useState } from "react";
+import { Order } from "../types";
+
+export function fetchAllOrders() {
+
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    useEffect(() => {
+        fetchListOfOrders();
+    },[])
+
+    const fetchListOfOrders = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/api/orders")
+            if (!response.ok) throw new Error('Failed to fetch orders');
+            const data = await response.json();
+            setOrders(JSON.parse(JSON.stringify(data)));
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to fetch orders');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return {orders, error, loading};
+}
