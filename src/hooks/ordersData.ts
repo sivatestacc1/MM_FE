@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Order } from "../types";
+import { ENDPOINT_URL } from "../constant";
 
 export function fetchAllOrders() {
 
@@ -13,7 +14,7 @@ export function fetchAllOrders() {
 
     const fetchListOfOrders = async () => {
         try {
-            const response = await fetch("http://localhost:3000/api/orders")
+            const response = await fetch(ENDPOINT_URL + "/api/orders")
             if (!response.ok) throw new Error('Failed to fetch orders');
             const data = await response.json();
             setOrders(JSON.parse(JSON.stringify(data)));

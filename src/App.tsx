@@ -4,7 +4,7 @@ import { ItemsForm } from './components/ItemsForm';
 import { LogisticsForm } from './components/LogisticsForm';
 import { OrderSummary } from './components/OrderSummary';
 import { Order, Item } from './types';
-
+import { ENDPOINT_URL } from './constant';
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
@@ -95,7 +95,7 @@ function App() {
   }
 
   const postNewOrder = (order: Order) => {
-      fetch('http://localhost:3000/api/orders', {
+      fetch(ENDPOINT_URL + '/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ function App() {
 
   // const postNewOrder = async (order: Order) => {
   //   try {
-  //     const response = await fetch('http://localhost:3000/api/orders', {
+  //     const response = await fetch(ENDPOINT_URL + '/api/orders', {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',
