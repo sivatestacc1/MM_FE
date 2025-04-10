@@ -4,7 +4,7 @@ import { ItemsForm } from './components/ItemsForm';
 import { LogisticsForm } from './components/LogisticsForm';
 import { OrderSummary } from './components/OrderSummary';
 import { Order, Item } from './types';
-import { ENDPOINT_URL } from './constant';
+import { ENDPOINT_URL } from './constants';
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderSubmitted, setOrderSubmitted] = useState(false);

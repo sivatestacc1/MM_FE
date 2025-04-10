@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Order } from "../types";
-import { ENDPOINT_URL } from "../constant";
+import { ENDPOINT_URL } from "../constants";
 
 export function fetchAllOrders() {
 
