@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { CustomerForm } from './components/CustomerForm';
-import { ItemsForm } from './components/ItemsForm';
-import { LogisticsForm } from './components/LogisticsForm';
-import { OrderSummary } from './components/OrderSummary';
-import { Order, Item } from './types';
-import { ENDPOINT_URL } from './constants';
-function App() {
+import { CustomerForm } from './CustomerForm';
+import { ItemsForm } from './ItemsForm';
+import { LogisticsForm } from './LogisticsForm';
+import { OrderSummary } from './OrderSummary';
+import { Order, Item } from '../types';
+import { ENDPOINT_URL } from '../constants';
+import { extractTableFromPDF } from '../fileUtil';
+function CreateNewOrder() {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   // const orderNumber = Math.floor(Math.random() * 1000000);
@@ -72,7 +73,11 @@ function App() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
+    //   setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
+    // }
+    extractTableFromPDF(e).then(invoiceData => {
+      console.log(invoiceData);
+    });
     }
   };
 
@@ -173,6 +178,7 @@ function App() {
                 onItemChange={handleItemChange}
                 onAddItem={handleAddItem}
                 onRemoveItem={handleRemoveItem}
+                onFileChange={handleFileChange}
               />
             )}
 
@@ -217,4 +223,4 @@ function App() {
   );
 }
 
-export default App;
+export default CreateNewOrder;

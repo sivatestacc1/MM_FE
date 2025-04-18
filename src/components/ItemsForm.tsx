@@ -7,9 +7,10 @@ interface ItemsFormProps {
   onItemChange: (index: number, field: keyof Item, value: string | number | boolean) => void;
   onAddItem: () => void;
   onRemoveItem: (index: number) => void;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem }: ItemsFormProps) {
+export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFileChange }: ItemsFormProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -37,6 +38,17 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem }: Item
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* <div>
+              <label className="block text-sm font-medium text-gray-700">Bill Copy</label>
+              <input
+                type="file"
+                name="billCopy"
+                onChange={onFileChange}
+                accept=".pdf,.jpg,.jpeg,.png"
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                required
+              />
+            </div> */}
             <div>
               <label className="block text-sm font-medium text-gray-700">Item Name</label>
               <input
