@@ -34,12 +34,10 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
   const pdf = await getDocument({ data: buffer }).promise;
 
   const allLines: string[] = [];
-  let itemsArray: String[] = [];
+  let itemsArray: (String | undefined)[] = [];
 
 
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) { //for each page
-    let itemStart = 0;
-    let itemEnd = 0;
     let defaultItem = {
       name: '',
       weight: 0,
@@ -57,14 +55,14 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
       } else {
         return item.str
       }
-    })
-      ?.join('^');
+    })?.join('^');
     strings = strings?.split("^|^")?.join('|'); // full page string
     // console.log(" ===> str", strings)
 
     const pageLines = strings.split('^');
     allLines.push(...pageLines.map(line => line.trim()).filter(Boolean)); // parse string to lines
-    allLines?.forEach((aLine, index) => { // filter only needed lines
+
+    allLines?.forEach((aLine, index) => { // filter only needed lines to fetch customer details
       if (aLine?.includes('#|:')) {
         const [_, data] = aLine?.split('#|:');
         jsonData.invoice.number = data?.trim();
@@ -76,26 +74,50 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
       } else if (aLine?.includes('Phone:')) {
         const [_, data] = aLine?.split('Phone:');
         jsonData.customer.phone = data?.trim();
-      } else if (aLine?.includes('%|Amt')) {
-        itemStart = index + 1;
-      } else if (aLine?.includes('Scan to')) {
-        itemEnd = index - 1;
       }
     })
     // console.log("====> parseRows", allLines)
 
-    if (itemStart !== 0 && itemStart < allLines?.length && itemEnd < allLines?.length) { // fetch item details
-      itemsArray = allLines?.slice(itemStart, itemEnd);
-      itemsArray?.forEach((item) => {
-        if (item?.includes('|') && !item?.includes('%|')) {
-          const data = item?.split('|');
-          if (data?.length <= 4) {
-            defaultItem = { name: (data[1])?.trim(), weight: (data[3])?.trim() ? Number((data[3])?.trim()) : 0, isPrinted: false, bagSize: '' };
-            jsonData.items.push(defaultItem);
+    let [_, wholeItemString] = strings?.split('%|Amt');
+    itemsArray = wholeItemString.split(/\^\d{1,2}\|/g);
+    itemsArray = itemsArray?.filter((item) => {
+      if (item?.includes('|')) { return item }
+    });
+    // console.log("====> items array", itemsArray);
+
+    itemsArray?.forEach((item) => { // item data parsing and fetching
+      if (item?.includes('|')) {
+        const data = item?.split('|');
+        let name = '';
+        let weigth = 0;
+        if (data?.length >= 3) {
+          if (data[0]?.includes('^')) {
+            const nameTextArray = data[0]?.split('^');
+            if (nameTextArray && nameTextArray?.length >= 2) {
+              name = nameTextArray[0]?.trim() + " - " + nameTextArray[1]?.trim();
+            }
+          } else {
+            name = data[0]?.trim();
           }
+
+          if (data[2]?.includes('^')) {
+            const numberTextarray = data[2]?.split('^');
+            if (numberTextarray && numberTextarray?.length >= 2) {
+              weigth = numberTextarray[0] ? Number((numberTextarray[0])?.trim()) : 0;
+            }
+          } else if(data[1]?.includes('^')) {
+            const numberTextarray = data[1]?.split('^');
+            if (numberTextarray && numberTextarray?.length >= 2) {
+              weigth = numberTextarray[0] ? Number((numberTextarray[0])?.trim()) : 0;
+            }
+          }
+
         }
-      })
-    }
+
+        defaultItem = { name: name, weight: weigth, isPrinted: false, bagSize: '' };
+        jsonData.items.push(defaultItem);
+      }
+    });
   }
 
   return jsonData;
