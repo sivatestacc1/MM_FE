@@ -1,12 +1,8 @@
 import React from 'react';
+import { Logistics } from '../types';
 
 interface LogisticsFormProps {
-  formData: {
-    parcelServiceName: string,
-    branch: string,
-    billNumber: string,
-    billCopy: File | null,
-  };
+  formData: Logistics;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
