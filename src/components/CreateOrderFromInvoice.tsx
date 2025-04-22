@@ -3,9 +3,10 @@ import { CustomerForm } from './CustomerForm';
 import { ItemsForm } from './ItemsForm';
 import { LogisticsForm } from './LogisticsForm';
 import { OrderSummary } from './OrderSummary';
-import { Order, Item } from '../types';
+import { Order, Item, Customer, Logistics } from '../types';
 import { ENDPOINT_URL } from '../constants';
 import { extractTableFromPDF } from '../fileUtil';
+import { FileObject } from '../types';
 
 export const CreateOrderFromInvoice = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -16,7 +17,7 @@ export const CreateOrderFromInvoice = () => {
         month: 'long',
         day: 'numeric',
     });
-    let defaultCustomer = {
+    let defaultCustomer: Customer = {
         name: '',
         address: '',
         city: '',
@@ -24,13 +25,7 @@ export const CreateOrderFromInvoice = () => {
         pincode: '',
         phone: '',
     };
-    let defaultItem = {
-        name: '',
-        weight: 0,
-        bagSize: '',
-        isPrinted: false,
-    };
-    let defaultLogistics = {
+    let defaultLogistics: Logistics = {
         parcelServiceName: '',
         branch: '',
         billNumber: '',
@@ -39,8 +34,8 @@ export const CreateOrderFromInvoice = () => {
     const [formData, setFormData] = useState<Order>({
         customer: defaultCustomer,
         logistics: defaultLogistics,
-        items: [defaultItem],
-        orderNumber: 0,
+        items: [],
+        orderNumber: '0',
         orderDate: orderDate,
     });
 
@@ -81,14 +76,9 @@ export const CreateOrderFromInvoice = () => {
             setIsInvoiceSelected(true);
             //   setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
             // }
-            extractTableFromPDF(e).then(invoiceData => {
+            extractTableFromPDF(e).then((invoiceData : FileObject) => {
                 console.log(invoiceData);
-                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer?.name, phone: invoiceData?.customer?.phone}, orderDate: invoiceData?.invoice?.date, orderNumber: invoiceData?.invoice?.number, items: invoiceData?.items})
-                // invoiceData?.items?.forEach((item: { name: string; weight:number; isPrinted: boolean; }, index: number) => {
-                //     handleItemChange(index,'name', item?.name);
-                //     handleItemChange(index,'weight', item?.weight);
-                //     handleItemChange(index,'isPrinted', item?.isPrinted);
-                // })
+                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone}, orderDate: invoiceData.invoice.date, orderNumber: invoiceData.invoice.number, items: invoiceData.items})
             });
         }
     };

@@ -1,34 +1,23 @@
 import React from 'react';
 import { getDocument } from 'pdfjs-dist';
 import * as pdfjs from 'pdfjs-dist'
+import { FileObject, Item } from './types/index';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url
 ).toString()
 
-// interface InvoiceItem {
-//   item: string;
-//   description: string;
-//   quantity: string;
-//   unit: string;
-//   rate: string;
-//   cgstPercent?: string;
-//   cgstAmount?: string;
-//   sgstPercent?: string;
-//   sgstAmount?: string;
-//   total: string;
-// }
 
-export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElement>) => {
+export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElement>): Promise<FileObject> => {
 
   const file = event.target.files?.[0];
-  const jsonData: any = {
-    invoice: {},
-    customer: {},
-    items: []
-  };
-  if (!file) return;
+  let jsonData: FileObject = { 
+    invoice: { number: '', date: ''}, 
+    customer: {name: '', address: '', city: '', state: '', pincode: '', phone: ''},
+    items: [{name: '', weight: 0, bagSize: '', isPrinted: false}]
+  }
+  if (!file) return jsonData;
 
   const buffer = await file.arrayBuffer();
   const pdf = await getDocument({ data: buffer }).promise;
@@ -38,12 +27,7 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
 
 
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) { //for each page
-    let defaultItem = {
-      name: '',
-      weight: 0,
-      bagSize: '',
-      isPrinted: false,
-    };
+    let defaultItem: Item = {name: '', weight: 0, bagSize: '', isPrinted: false};
     const page = await pdf.getPage(pageNum);
     const content = await page.getTextContent(); // read content
 
@@ -78,13 +62,24 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
     })
     // console.log("====> parseRows", allLines)
 
-    let [_, wholeItemString] = strings?.split('%|Amt');
-    itemsArray = wholeItemString.split(/\^\d{1,2}\|/g);
-    itemsArray = itemsArray?.filter((item) => {
-      if (item?.includes('|')) { return item }
-    });
-    // console.log("====> items array", itemsArray);
+    if (strings?.includes('%|Amt|%|Amt^')) {
+      let [_, wholeItemString] = strings?.split('%|Amt|%|Amt^');
+      itemsArray = wholeItemString.split(/\^\d{1,2}\|/g);
+      itemsArray = itemsArray?.filter((item) => {
+        if (item?.includes('|')) { return item }
+      });
+      // console.log("====> 1 items array", itemsArray);
+    } else if (strings?.includes('%|Amt')) {
+      let [_, wholeItemString] = strings?.split('%|Amt');
+      itemsArray = wholeItemString.split(/\^\d{1,2}\|/g);
+      itemsArray = itemsArray?.filter((item) => {
+        if (item?.includes('|')) { return item }
+      });
+      // console.log("====> 2 items array", itemsArray);
+    }
 
+
+    let aParseArray: Item[] = [];
     itemsArray?.forEach((item) => { // item data parsing and fetching
       if (item?.includes('|')) {
         const data = item?.split('|');
@@ -115,9 +110,10 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
         }
 
         defaultItem = { name: name, weight: weigth, isPrinted: false, bagSize: '' };
-        jsonData.items.push(defaultItem);
+        aParseArray.push(defaultItem);
       }
     });
+    jsonData.items = aParseArray
   }
 
   return jsonData;

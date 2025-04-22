@@ -22,7 +22,7 @@ export interface Logistics {
 }
 
 export interface Order {
-  orderNumber: number;
+  orderNumber: string;
   orderDate: string;
   customer: Customer;
   // doorNumber: string;
@@ -37,4 +37,28 @@ export interface Order {
   // serviceBranch: string;
   // billNumber: string;
   // billCopy: File | null;
+}
+
+export interface Invoice {
+  number: string;
+  date: string;
+}
+
+// export interface Customer {
+//   name: string;
+//   address: string;
+//   phone: string;
+// }
+
+export interface Item {
+  name: string;
+  weight: number;
+  bagSize: string;
+  isPrinted: boolean;
+}
+
+export interface FileObject {
+  invoice: Invoice;
+  customer: Customer;
+  items: Item[];
 }

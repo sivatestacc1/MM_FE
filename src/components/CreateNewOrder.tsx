@@ -39,7 +39,7 @@ function CreateNewOrder() {
     customer: defaultCustomer,
     logistics: defaultLogistics,
     items: [defaultItem],
-    orderNumber: 0,
+    orderNumber: '0',
     orderDate: orderDate,
   });
 

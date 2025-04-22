@@ -1,14 +1,8 @@
 import React from 'react';
+import { Customer } from '../types';
 
 interface CustomerFormProps {
-  formData: {
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    pincode: string;
-    phone: string;
-  };
+  formData: Customer;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
