@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import { toPng } from 'html-to-image';
 import { Order } from '../types';
 
 interface OrderSummaryProps {
@@ -6,10 +8,35 @@ interface OrderSummaryProps {
   orderDate: string;
 }
 
+
+
 export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const handleShare = async () => {
+    if (!cardRef.current) return;
+
+    const dataUrl = await toPng(cardRef.current);
+
+    const blob = await (await fetch(dataUrl)).blob();
+    const file = new File([blob], 'card.png', { type: 'image/png' });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({
+        files: [file],
+        title: 'New Order',
+        text: 'Sharing this order via image',
+      });
+    } else {
+      alert('Sharing not supported on this browser/device.');
+    }
+  }
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg shadow-md">
-      <div className="flex justify-between items-start">
+    <div>
+      <button onClick={handleShare} className="mb-8 px-4 py-2 bg-green-500 text-white rounded">
+        Share Order
+      </button>
+    <div className="space-y-6 bg-white p-6 rounded-lg shadow-md" ref={cardRef}>
+      <div className="flex justify-between items-start" >
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Order Summary</h2>
           <p className="text-sm text-gray-500">Order #{orderNumber}</p>
@@ -52,6 +79,7 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
           <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p>
         </div>
       </div>
+    </div>
     </div>
   );
 }

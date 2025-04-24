@@ -26,7 +26,7 @@ function Dashboard() {
                     </button>
                 </div>}
 
-                <div className="bg-white shadow-md rounded-lg p-6">
+                <div className={`${!showOrdersList ? 'bg-white shadow-md rounded-lg p-6' : ''}`}>
                     {(!showCreateOrderForm && !showOrdersList && !showCreateOrderFromInvoice) && <div className="my-4 flex justify-between">
                         <h4 className="mt-2 text-1xl font-bold text-gray-900">Select Menu</h4>
                         <button

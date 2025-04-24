@@ -38,9 +38,9 @@ function ListOfOrders() {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="bg-white">
                         {orders.map((order) => (
-                            <tr key={order?.orderNumber}>
+                            <tr key={order?.orderNumber} className="border border-gray-300 dark:border-gray-600">
                                 <td>{order?.orderNumber}</td>
                                 <td>{new Date(order?.orderDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td><p><b>{order?.customer?.name }</b><br />{ order?.customer?.address + "," + order?.customer?.city}<br />{ order?.customer?.state + " - " + order?.customer?.pincode} <br /> {order?.customer?.phone}</p></td>
