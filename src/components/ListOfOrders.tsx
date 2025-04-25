@@ -12,11 +12,18 @@ function ListOfOrders() {
     },[orders, error, loading]);
 
     if(showAOrder) {
+        const date = new Date(showAOrder?.orderDate);
+        const dateString = date?.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+
         return (
             <OrderSummary
             formData={showAOrder}
             orderNumber={""+showAOrder?.orderNumber}
-            orderDate={showAOrder?.orderDate}
+            orderDate={dateString}
             />
         );
     }
@@ -28,7 +35,7 @@ function ListOfOrders() {
                 <h1 className="mt-4 text-2xl font-bold text-gray-900">List Of Orders</h1>
             </div>
             <div className="p-0">
-                <table className="table-auto w-full">
+                <table className="table-auto w-full p-2">
                     <thead>
                         <tr>
                             <th>Order Number</th>
@@ -38,10 +45,10 @@ function ListOfOrders() {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody className="">
                         {orders.map((order) => (
                             <tr key={order?.orderNumber} className="border border-gray-300 dark:border-gray-600">
-                                <td>{order?.orderNumber}</td>
+                                <td className="p-4 ">{order?.orderNumber}</td>
                                 <td>{new Date(order?.orderDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td><p><b>{order?.customer?.name }</b><br />{ order?.customer?.address + "," + order?.customer?.city}<br />{ order?.customer?.state + " - " + order?.customer?.pincode} <br /> {order?.customer?.phone}</p></td>
                                 <td><p><b>Parcel / Lorry Service Name: </b>{order?.logistics?.parcelServiceName}<br /> <b>Delivery Branch: </b>{ order?.logistics?.branch }</p></td>

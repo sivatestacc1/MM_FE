@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { toPng } from 'html-to-image';
 import { Order } from '../types';
+import ReceiptBg from '../asset/img/bg-strip.png';
 
 interface OrderSummaryProps {
   formData: Order;
@@ -35,51 +36,54 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
       <button onClick={handleShare} className="mb-8 px-4 py-2 bg-green-500 text-white rounded">
         Share Order
       </button>
-    <div className="space-y-6 bg-white p-6 rounded-lg shadow-md" ref={cardRef}>
-      <div className="flex justify-between items-start" >
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Order Summary</h2>
-          <p className="text-sm text-gray-500">Order #{orderNumber}</p>
-        </div>
-        <p className="text-sm text-gray-500">{orderDate}</p>
-      </div>
-
-      <div className="border-t pt-4">
-        <h3 className="font-semibold mb-2">Customer Information</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <p><span className="text-gray-600">Name:</span> {formData.customer.name}</p>
-          <p><span className="text-gray-600">Phone:</span> {formData.customer.phone}</p>
-          <p className="col-span-2">
-            <span className="text-gray-600">Address:</span> {formData.customer.address},
-            {formData.customer.city}, {formData.customer.state} - {formData.customer.pincode}
-          </p>
-        </div>
-      </div>
-
-      <div className="border-t pt-4">
-        <h3 className="font-semibold mb-2">Items</h3>
-        <div className="space-y-2">
-          {formData.items.map((item, index) => (
-            <div key={index} className="grid grid-cols-4 gap-4 p-2 bg-gray-50 rounded">
-              <p>{item.name}</p>
-              <p>{item.weight} KG</p>
-              <p>{item.bagSize}</p>
-              <p>{item.isPrinted ? 'Printed' : 'Not Printed'}</p>
+      <div className="m-0 p-8 w-full" ref={cardRef} style={{ backgroundColor: '#f5fffa94' }}>
+        <div className='w-full h-6 bg-cover p-0 m-0 bg-center' style={{ backgroundImage: `url(${ReceiptBg})` }}></div>
+        <div className="space-y-6 bg-white p-6 shadow-md" >
+          <div className="flex justify-between items-start" >
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Order #{orderNumber}</h2>
             </div>
-          ))}
-        </div>
-      </div>
+            <p className="text-sm text-gray-500">{ orderDate}</p>
+          </div>
 
-      <div className="border-t pt-4">
-        <h3 className="font-semibold mb-2">Logistics Information</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <p><span className="text-gray-600">Service:</span> {formData.logistics.parcelServiceName}</p>
-          <p><span className="text-gray-600">Branch:</span> {formData.logistics.branch}</p>
-          <p><span className="text-gray-600">Bill Number:</span> {formData.logistics.billNumber}</p>
-          <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p>
+          <div className="border-t pt-4">
+            <h3 className="font-semibold mb-2">Customer Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><span className="text-gray-600">Name:</span> {formData.customer.name}</p>
+              <p><span className="text-gray-600">Phone:</span> {formData.customer.phone}</p>
+              <p className="col-span-2">
+                <span className="text-gray-600">Address:</span> {formData.customer.address},
+                {formData.customer.city}, {formData.customer.state} - {formData.customer.pincode}
+              </p>
+            </div>
+          </div>
+
+          <div className="border-t pt-4">
+            <h3 className="font-semibold mb-2">Items</h3>
+            <div className="space-y-2">
+              {formData.items.map((item, index) => (
+                <div key={index} className="grid grid-cols-4 gap-4 p-2 bg-gray-50 rounded">
+                  <p>{item.name}</p>
+                  <p>{item.weight} KG</p>
+                  <p>{item.bagSize}</p>
+                  <p>{item.isPrinted ? 'Printed' : 'Not Printed'}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-t pt-4">
+            <h3 className="font-semibold mb-2">Logistics Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><span className="text-gray-600">Service:</span> {formData.logistics.parcelServiceName}</p>
+              <p><span className="text-gray-600">Branch:</span> {formData.logistics.branch}</p>
+              <p><span className="text-gray-600">Bill Number:</span> {formData.logistics.billNumber}</p>
+              <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p>
+            </div>
+          </div>
         </div>
+        <div className='w-full h-6 bg-cover p-0 m-0 bg-center' style={{ backgroundImage: `url(${ReceiptBg})`, backgroundRepeat: 'no-repeat', transform: 'rotate(180deg)' }}></div>
       </div>
-    </div>
     </div>
   );
 }
