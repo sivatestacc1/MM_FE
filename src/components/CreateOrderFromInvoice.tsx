@@ -35,8 +35,8 @@ export const CreateOrderFromInvoice = () => {
         customer: defaultCustomer,
         logistics: defaultLogistics,
         items: [],
-        orderNumber: '0',
-        orderDate: orderDate,
+        orderNumber: 0,
+        orderDate: new Date(orderDate),
     });
 
     useEffect(()=>{
@@ -74,11 +74,11 @@ export const CreateOrderFromInvoice = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             setIsInvoiceSelected(true);
-            //   setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
+            // setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
             // }
             extractTableFromPDF(e).then((invoiceData : FileObject) => {
                 console.log(invoiceData);
-                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone}, orderDate: invoiceData.invoice.date, orderNumber: invoiceData.invoice.number, items: invoiceData.items})
+                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone}, orderDate: invoiceData.invoice.date, orderNumber: 0, items: invoiceData.items, logistics: {...formData.logistics, billNumber: invoiceData.invoice.number/*, billCopy: e.target.files[0] */}})
             });
         }
     };
@@ -92,7 +92,7 @@ export const CreateOrderFromInvoice = () => {
         return (
             <OrderSummary
                 formData={formData}
-                orderNumber={formData?.orderNumber?.toString()}
+                orderNumber={formData?.orderNumber}
                 orderDate={formData?.orderDate}
             />
         );

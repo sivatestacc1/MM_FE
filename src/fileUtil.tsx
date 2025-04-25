@@ -13,7 +13,7 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
 
   const file = event.target.files?.[0];
   let jsonData: FileObject = { 
-    invoice: { number: '', date: ''}, 
+    invoice: { number: '', date: new Date()}, 
     customer: {name: '', address: '', city: '', state: '', pincode: '', phone: ''},
     items: [{name: '', weight: 0, bagSize: '', isPrinted: false}]
   }
@@ -52,7 +52,12 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
         jsonData.invoice.number = data?.trim();
       } else if (aLine?.includes('Invoice Date|:')) {
         const [_, data] = aLine?.split('Invoice Date|:');
-        jsonData.invoice.date = data?.trim();
+        const parts = data?.trim()?.split('/');
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+        const date = new Date(year, month, day);
+        jsonData.invoice.date = date;
       } else if (aLine?.includes('Bill To|Ship To') && (index + 1 < allLines?.length)) {
         jsonData.customer.name = allLines[index + 1]
       } else if (aLine?.includes('Phone:')) {

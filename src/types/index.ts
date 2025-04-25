@@ -22,8 +22,8 @@ export interface Logistics {
 }
 
 export interface Order {
-  orderNumber: string;
-  orderDate: string;
+  orderNumber: number;
+  orderDate: Date;
   customer: Customer;
   // doorNumber: string;
   // street: string;
@@ -41,7 +41,7 @@ export interface Order {
 
 export interface Invoice {
   number: string;
-  date: string;
+  date: Date;
 }
 
 // export interface Customer {

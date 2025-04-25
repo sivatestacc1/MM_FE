@@ -22,8 +22,8 @@ function ListOfOrders() {
         return (
             <OrderSummary
             formData={showAOrder}
-            orderNumber={""+showAOrder?.orderNumber}
-            orderDate={dateString}
+            orderNumber={showAOrder?.orderNumber}
+            orderDate={new Date(dateString)}
             />
         );
     }

@@ -5,16 +5,16 @@ import { LogisticsForm } from './LogisticsForm';
 import { OrderSummary } from './OrderSummary';
 import { Order, Item } from '../types';
 import { ENDPOINT_URL } from '../constants';
-import { extractTableFromPDF } from '../fileUtil';
 function CreateNewOrder() {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   // const orderNumber = Math.floor(Math.random() * 1000000);
-  const orderDate = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const orderDate = new Date()
+  // .toLocaleDateString('en-US', {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric',
+  // });
   let defaultCustomer = {
     name: '',
     address: '',
@@ -39,7 +39,7 @@ function CreateNewOrder() {
     customer: defaultCustomer,
     logistics: defaultLogistics,
     items: [defaultItem],
-    orderNumber: '0',
+    orderNumber: 0,
     orderDate: orderDate,
   });
 
@@ -73,11 +73,7 @@ function CreateNewOrder() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-    //   setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
-    // }
-    extractTableFromPDF(e).then(invoiceData => {
-      console.log(invoiceData);
-    });
+      setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
     }
   };
 
@@ -92,7 +88,7 @@ function CreateNewOrder() {
       
           <OrderSummary
             formData={formData}
-            orderNumber={formData?.orderNumber?.toString()}
+            orderNumber={formData?.orderNumber}
             orderDate={formData?.orderDate}
           />
 

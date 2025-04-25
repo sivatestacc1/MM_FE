@@ -5,8 +5,8 @@ import ReceiptBg from '../asset/img/bg-strip.png';
 
 interface OrderSummaryProps {
   formData: Order;
-  orderNumber: string;
-  orderDate: string;
+  orderNumber: number;
+  orderDate: Date;
 }
 
 
@@ -43,9 +43,8 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Order #{orderNumber}</h2>
             </div>
-            <p className="text-sm text-gray-500">{ orderDate}</p>
+            <p className="text-sm text-gray-500">{ orderDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
           </div>
-
           <div className="border-t pt-4">
             <h3 className="font-semibold mb-2">Customer Information</h3>
             <div className="grid grid-cols-2 gap-4">
