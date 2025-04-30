@@ -78,7 +78,7 @@ export const CreateOrderFromInvoice = () => {
             // }
             extractTableFromPDF(e).then((invoiceData : FileObject) => {
                 console.log(invoiceData);
-                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone}, orderDate: invoiceData.invoice.date, orderNumber: 0, items: invoiceData.items, logistics: {...formData.logistics, billNumber: invoiceData.invoice.number/*, billCopy: e.target.files[0] */}})
+                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone, address: invoiceData.customer.address}, orderDate: invoiceData.invoice.date, orderNumber: 0, items: invoiceData.items, logistics: {...formData.logistics, billNumber: invoiceData.invoice.number/*, billCopy: e.target.files[0] */}})
             });
         }
     };

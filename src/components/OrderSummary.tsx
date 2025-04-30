@@ -43,13 +43,13 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
         <div className="space-y-6 bg-white p-2 shadow-md" >
           <div className="flex justify-between items-start" >
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Order #{orderNumber}</h2>
+              <h2 className="text-[28px] font-bold text-gray-900">Order #{orderNumber}</h2>
             </div>
-            <p className="text-sm text-gray-500">{ orderDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
+            <p className="text-base text-gray-800">{ orderDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
           </div>
           <div className="border-t pt-4">
             <h3 className="text-[20px] font-bold mb-2">Customer Information</h3>
-            <div className="grid grid-cols-1 gap-0 bg-orange-50 p-4 rounded-md border-2 border-orange-100">
+            <div className="grid grid-cols-1 gap-0 p-4 ">
               <p><span className="text-gray-600">Name:</span> {formData.customer.name}</p>
               <p><span className="text-gray-600">Phone:</span> {formData.customer.phone}</p>
               <p className="col-span-1">
@@ -83,9 +83,9 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
 
           <div className="border-t pt-4">
             <h3 className="text-[20px] font-bold mb-2">Logistics Information</h3>
-            <div className="grid grid-cols-1 gap-0 bg-yellow-50 p-4 rounded-md border-2 border-yellow-100">
-              <p><span className="text-gray-600">Branch:</span> {formData.logistics.branch}</p>
+            <div className="grid grid-cols-1 gap-0 p-4">
               <p><span className="text-gray-600">Service:</span> {formData.logistics.parcelServiceName}</p>
+              <p><span className="text-gray-600">Branch:</span> {formData.logistics.branch}</p>
               <p><span className="text-gray-600">Bill Number:</span> {formData.logistics.billNumber}</p>
               <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p>
             </div>

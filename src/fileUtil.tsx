@@ -46,6 +46,9 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
     const pageLines = strings.split('^');
     allLines.push(...pageLines.map(line => line.trim()).filter(Boolean)); // parse string to lines
 
+    let addressString = '';
+    let addressStartIndex = -1;
+    let addressEndIndex = -1;
     allLines?.forEach((aLine, index) => { // filter only needed lines to fetch customer details
       if (aLine?.includes('#|:')) {
         const [_, data] = aLine?.split('#|:');
@@ -60,9 +63,18 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
         jsonData.invoice.date = date;
       } else if (aLine?.includes('Bill To|Ship To') && (index + 1 < allLines?.length)) {
         jsonData.customer.name = allLines[index + 1]
+        addressStartIndex = index + 2;
       } else if (aLine?.includes('Phone:')) {
         const [_, data] = aLine?.split('Phone:');
         jsonData.customer.phone = data?.trim();
+        addressEndIndex = index;
+
+        if(addressString === '' && addressStartIndex > 0 && addressEndIndex > 0 && addressStartIndex < allLines?.length && addressEndIndex < allLines?.length && addressStartIndex <= addressEndIndex) {
+          for (let i=addressStartIndex; i<addressEndIndex; i++) {
+            addressString = addressString + allLines[i];
+          }
+          jsonData.customer.address = addressString;
+        }
       }
     })
     // console.log("====> parseRows", allLines)
