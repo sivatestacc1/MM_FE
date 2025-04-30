@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import { toPng } from 'html-to-image';
 import { Order } from '../types';
 import ReceiptBg from '../asset/img/bg-strip.png';
+import PlainBag from '../asset/img/plain.png';
+import PrintedBag from '../asset/img/printer.png';
 
 interface OrderSummaryProps {
   formData: Order;
@@ -36,9 +38,9 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
       <button onClick={handleShare} className="mb-8 px-4 py-2 bg-green-500 text-white rounded">
         Share Order
       </button>
-      <div className="m-0 p-8 w-full" ref={cardRef} style={{ backgroundColor: '#f5fffa94' }}>
+      <div className="m-0 p-2 w-full" ref={cardRef} style={{ backgroundColor: '#f5fffa94' }}>
         <div className='w-full h-6 bg-cover p-0 m-0 bg-center' style={{ backgroundImage: `url(${ReceiptBg})` }}></div>
-        <div className="space-y-6 bg-white p-6 shadow-md" >
+        <div className="space-y-6 bg-white p-2 shadow-md" >
           <div className="flex justify-between items-start" >
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Order #{orderNumber}</h2>
@@ -46,11 +48,11 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
             <p className="text-sm text-gray-500">{ orderDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
           </div>
           <div className="border-t pt-4">
-            <h3 className="font-semibold mb-2">Customer Information</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <h3 className="text-[20px] font-bold mb-2">Customer Information</h3>
+            <div className="grid grid-cols-1 gap-0 bg-orange-50 p-4 rounded-md border-2 border-orange-100">
               <p><span className="text-gray-600">Name:</span> {formData.customer.name}</p>
               <p><span className="text-gray-600">Phone:</span> {formData.customer.phone}</p>
-              <p className="col-span-2">
+              <p className="col-span-1">
                 <span className="text-gray-600">Address:</span> {formData.customer.address},
                 {formData.customer.city}, {formData.customer.state} - {formData.customer.pincode}
               </p>
@@ -58,24 +60,32 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
           </div>
 
           <div className="border-t pt-4">
-            <h3 className="font-semibold mb-2">Items</h3>
-            <div className="space-y-2">
+            <h3 className="text-[20px] font-bold mb-2">Items</h3>
+            <div className="">
+              <div key={"title-row"} className="grid grid-cols-4 gap-0 bg-gray-50 rounded border-gray-100">
+                <p className='col-span-2 flex justify-center text-center text-sm'>Item Name</p>
+                <p className='flex justify-stretch text-sm'>Wgt - KG</p>
+                {/* <p className='flex justify-center text-center text-[12px]'>Bag Size</p> */}
+                <p className='flex justify-center text-center text-sm'>Bag Type</p>
+              </div>
               {formData.items.map((item, index) => (
-                <div key={index} className="grid grid-cols-4 gap-4 p-2 bg-gray-50 rounded">
-                  <p>{item.name}</p>
-                  <p>{item.weight} KG</p>
-                  <p>{item.bagSize}</p>
-                  <p>{item.isPrinted ? 'Printed' : 'Not Printed'}</p>
+                <div key={index} className={`grid grid-cols-4 p-1 mb-1 ${index%2 === 0 ? 'bg-blue-50  border-blue-100' : 'bg-gray-100 border-gray-200'} rounded border-2`}>
+                  <p className={`col-span-2 border-r-2 text-base ${index%2 === 0 ? 'border-blue-200' : 'border-gray-200'}`}>{item.name}</p>
+                  <p className={`border-r-2 text-center text-base ${index%2 === 0 ? 'border-blue-200' : 'border-gray-200'}`}>{item.weight} KG</p>
+                  <div className={`col-span-1 flex flex-col w-full`}>
+                    <img src={item.isPrinted ? PrintedBag : PlainBag} className='w-12 h-12 self-center' />
+                    <p className={`text-[12px] text-center`}>{item.bagSize} <br /> {item.isPrinted ? 'Printed bag' : 'Plain bag'}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="border-t pt-4">
-            <h3 className="font-semibold mb-2">Logistics Information</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><span className="text-gray-600">Service:</span> {formData.logistics.parcelServiceName}</p>
+            <h3 className="text-[20px] font-bold mb-2">Logistics Information</h3>
+            <div className="grid grid-cols-1 gap-0 bg-yellow-50 p-4 rounded-md border-2 border-yellow-100">
               <p><span className="text-gray-600">Branch:</span> {formData.logistics.branch}</p>
+              <p><span className="text-gray-600">Service:</span> {formData.logistics.parcelServiceName}</p>
               <p><span className="text-gray-600">Bill Number:</span> {formData.logistics.billNumber}</p>
               <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p>
             </div>
