@@ -173,7 +173,7 @@ export const CreateOrderFromInvoice = () => {
                     <LogisticsForm
                         formData={formData?.logistics}
                         onChange={handleLogisticsChange}
-                        onFileChange={handleFileChange}
+                        onFileChange={()=>{}}
                     />
                 )}
 

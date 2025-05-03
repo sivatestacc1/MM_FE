@@ -45,7 +45,7 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
             <div>
               <h2 className="text-[28px] font-bold text-gray-900">Order #{orderNumber}</h2>
             </div>
-            <p className="text-base text-gray-800">{ orderDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
+            <p className="text-base text-gray-800">{ new Date(orderDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
           </div>
           <div className="border-t pt-4">
             <h3 className="text-[20px] font-bold mb-2">Customer Information</h3>
