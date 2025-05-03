@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import CreateNewOrder from "./components/CreateNewOrder";
 import ListOfOrders from "./components/ListOfOrders";
 import { CreateOrderFromInvoice } from "./components/CreateOrderFromInvoice";
-import { fetchAllOrders } from "./hooks/ordersData";
 import { ENDPOINT_URL } from "./constants";
 import Loader from "./components/Loader";
 
@@ -19,9 +18,7 @@ function Dashboard() {
         }
     }, []);
     const checkBEConnection = () => {
-        console.log("====> called check con ")
         setTimeout(() => {
-            console.log("======> loop time")
             if(!isBEReady) {
                 fetchListOfOrders();
             } else {
