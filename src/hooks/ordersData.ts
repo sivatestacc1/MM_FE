@@ -46,7 +46,7 @@ export function fetchOrdersByDate(date: Date) {
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({date: date.toISOString().replace("Z", "+00:00")}),
+                    body: JSON.stringify({date: date}),
                   }
             )
             if (!response.ok) throw new Error('Failed to fetch orders');

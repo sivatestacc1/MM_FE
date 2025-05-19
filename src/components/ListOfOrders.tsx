@@ -28,7 +28,7 @@ function ListOfOrders() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({date: selectedDate.toISOString().replace("Z", "+00:00")}),
+                    body: JSON.stringify({date: selectedDate}),
                     }
             )
             if (!response.ok) throw new Error('Failed to fetch orders');
@@ -42,18 +42,12 @@ function ListOfOrders() {
     };
 
     if(showAOrder) {
-        const date = new Date(showAOrder?.orderDate);
-        const dateString = date?.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })
-
         return (
             <OrderSummary
             formData={showAOrder}
             orderNumber={showAOrder?.orderNumber}
-            orderDate={new Date(dateString)}
+            orderDate={showAOrder?.orderDate}
+            invoiceDate={showAOrder?.invoiceDate}
             />
         );
     }
@@ -70,6 +64,7 @@ function ListOfOrders() {
                         <tr>
                             <th>Order Number</th>
                             <th>Order Date</th>
+                            <th>Invoice Date</th>
                             <th>Customer Details</th>
                             <th>Logistics Address</th>
                             <th>Action</th>
@@ -80,6 +75,7 @@ function ListOfOrders() {
                             <tr key={order?.orderNumber} className="border border-gray-300 dark:border-gray-600">
                                 <td className="p-4 ">{order?.orderNumber}</td>
                                 <td>{new Date(order?.orderDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                <td>{new Date(order?.invoiceDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td><p><b>{order?.customer?.name }</b><br />{ order?.customer?.address + "," + order?.customer?.city}<br />{ order?.customer?.state + " - " + order?.customer?.pincode} <br /> {order?.customer?.phone}</p></td>
                                 <td><p><b>Parcel / Lorry Service Name: </b>{order?.logistics?.parcelServiceName}<br /> <b>Delivery Branch: </b>{ order?.logistics?.branch }</p></td>
                                 <td><button className="bg-blue-500 text-white p-2 rounded-md" onClick={() => {setShowAOrder(order)}}>View</button></td>

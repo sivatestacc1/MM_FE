@@ -15,7 +15,7 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
   let jsonData: FileObject = { 
     invoice: { number: '', date: new Date()}, 
     customer: {name: '', address: '', city: '', state: '', pincode: '', phone: ''},
-    items: [{name: '', weight: 0, bagSize: '', isPrinted: false}]
+    items: [{name: '', weight: 0, bagSize: '', isPrinted: true}]
   }
   if (!file) return jsonData;
 
@@ -27,7 +27,7 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
 
 
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) { //for each page
-    let defaultItem: Item = {name: '', weight: 0, bagSize: '', isPrinted: false};
+    let defaultItem: Item = {name: '', weight: 0, bagSize: '', isPrinted: true};
     const page = await pdf.getPage(pageNum);
     const content = await page.getTextContent(); // read content
 
@@ -126,7 +126,7 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
 
         }
 
-        defaultItem = { name: name, weight: weigth, isPrinted: false, bagSize: '' };
+        defaultItem = { name: name, weight: weigth, isPrinted: true, bagSize: '' };
         aParseArray.push(defaultItem);
       }
     });

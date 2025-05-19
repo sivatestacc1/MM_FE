@@ -9,11 +9,12 @@ interface OrderSummaryProps {
   formData: Order;
   orderNumber: number;
   orderDate: Date;
+  invoiceDate: Date;
 }
 
 
 
-export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryProps) {
+export function OrderSummary({ formData, orderNumber, orderDate, invoiceDate }: OrderSummaryProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const handleShare = async () => {
     if (!cardRef.current) return;
@@ -45,7 +46,10 @@ export function OrderSummary({ formData, orderNumber, orderDate }: OrderSummaryP
             <div>
               <h2 className="text-[28px] font-bold text-gray-900">Order #{orderNumber}</h2>
             </div>
-            <p className="text-base text-gray-800">{ new Date(orderDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
+            <div className='flex flex-col'>
+            <p className="text-base text-gray-800">Order Date: { new Date(orderDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
+            <p className="text-base text-gray-800">Invoice Date: { new Date(invoiceDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric',})} </p>
+            </div>
           </div>
           <div className="border-t pt-4">
             <h3 className="text-[20px] font-bold mb-2">Customer Information</h3>

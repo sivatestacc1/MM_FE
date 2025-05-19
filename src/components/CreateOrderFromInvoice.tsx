@@ -12,11 +12,9 @@ export const CreateOrderFromInvoice = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [isInvoiceSelected, setIsInvoiceSelected] = useState(false);
     const [orderSubmitted, setOrderSubmitted] = useState(false);
-    const orderDate = new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
+    const orderDate = new Date();
+    orderDate.setHours(0, 0, 0, 0);
+    const invoiceDate = new Date()
     let defaultCustomer: Customer = {
         name: '',
         address: '',
@@ -36,7 +34,8 @@ export const CreateOrderFromInvoice = () => {
         logistics: defaultLogistics,
         items: [],
         orderNumber: 0,
-        orderDate: new Date(orderDate),
+        orderDate: orderDate,
+        invoiceDate: invoiceDate,
     });
 
     useEffect(()=>{
@@ -60,7 +59,7 @@ export const CreateOrderFromInvoice = () => {
     const handleAddItem = () => {
         setFormData({
             ...formData,
-            items: [...formData.items, { name: '', weight: 0, bagSize: '', isPrinted: false }],
+            items: [...formData.items, { name: '', weight: 0, bagSize: '', isPrinted: true }],
         });
     };
 
@@ -78,7 +77,7 @@ export const CreateOrderFromInvoice = () => {
             // }
             extractTableFromPDF(e).then((invoiceData : FileObject) => {
                 console.log(invoiceData);
-                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone, address: invoiceData.customer.address}, orderDate: invoiceData.invoice.date, orderNumber: 0, items: invoiceData.items, logistics: {...formData.logistics, billNumber: invoiceData.invoice.number/*, billCopy: e.target.files[0] */}})
+                setFormData({...formData, customer: {...formData.customer, name: invoiceData?.customer.name, phone: invoiceData.customer.phone, address: invoiceData.customer.address}, invoiceDate: invoiceData.invoice.date, orderDate: orderDate, orderNumber: 0, items: invoiceData.items, logistics: {...formData.logistics, billNumber: invoiceData.invoice.number/*, billCopy: e.target.files[0] */}})
             });
         }
     };
@@ -94,6 +93,7 @@ export const CreateOrderFromInvoice = () => {
                 formData={formData}
                 orderNumber={formData?.orderNumber}
                 orderDate={formData?.orderDate}
+                invoiceDate={formData?.invoiceDate}
             />
         );
     }
@@ -108,7 +108,6 @@ export const CreateOrderFromInvoice = () => {
         }).then((res) => {
             if (res.ok) {
                 res.json().then((data) => {
-                    ;
                     setFormData(data);
                     setOrderSubmitted(true);
                 });

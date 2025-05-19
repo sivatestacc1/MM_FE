@@ -8,13 +8,9 @@ import { ENDPOINT_URL } from '../constants';
 function CreateNewOrder() {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
-  // const orderNumber = Math.floor(Math.random() * 1000000);
   const orderDate = new Date()
-  // .toLocaleDateString('en-US', {
-  //   year: 'numeric',
-  //   month: 'long',
-  //   day: 'numeric',
-  // });
+  orderDate.setHours(0, 0, 0, 0);
+  const invoiceDate = new Date()
   let defaultCustomer = {
     name: '',
     address: '',
@@ -27,7 +23,7 @@ function CreateNewOrder() {
     name: '',
     weight: 0,
     bagSize: '',
-    isPrinted: false,
+    isPrinted: true,
   };
   let defaultLogistics = {
     parcelServiceName: '',
@@ -41,6 +37,7 @@ function CreateNewOrder() {
     items: [defaultItem],
     orderNumber: 0,
     orderDate: orderDate,
+    invoiceDate: invoiceDate,
   });
 
   const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +57,7 @@ function CreateNewOrder() {
   const handleAddItem = () => {
     setFormData({
       ...formData,
-      items: [...formData.items, { name: '', weight: 0, bagSize: '', isPrinted: false }],
+      items: [...formData.items, { name: '', weight: 0, bagSize: '', isPrinted: true }],
     });
   };
 
@@ -90,6 +87,7 @@ function CreateNewOrder() {
             formData={formData}
             orderNumber={formData?.orderNumber}
             orderDate={formData?.orderDate}
+            invoiceDate={formData?.invoiceDate}
           />
 
     );
@@ -117,28 +115,6 @@ function CreateNewOrder() {
       alert('Failed to submit order');
     });
   }
-
-  // const postNewOrder = async (order: Order) => {
-  //   try {
-  //     const response = await fetch(ENDPOINT_URL + '/api/orders', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(order),
-  //     });
-  //     if (response.ok) {
-  //       console.log('response : ', response.body);
-  //       alert('Order submitted successfully');
-  //       setOrderSubmitted(true);
-  //     } else {
-  //       alert('Failed to submit order');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting order:', error);
-  //     alert('Failed to submit order');
-  //   }
-  // }
 
   return (
 
