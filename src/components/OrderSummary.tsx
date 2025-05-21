@@ -39,7 +39,7 @@ export function OrderSummary({ formData, orderNumber, orderDate, invoiceDate }: 
       <button onClick={handleShare} className="mb-8 px-4 py-2 bg-green-500 text-white rounded">
         Share Order
       </button>
-      <div className="m-0 p-2 w-full" ref={cardRef} style={{ backgroundColor: '#f5fffa94' }}>
+      <div className="m-0 p-2 w-full" ref={cardRef} style={{ backgroundColor: 'transparent' }}>
         <div className='w-full h-6 bg-cover p-0 m-0 bg-center' style={{ backgroundImage: `url(${ReceiptBg})` }}></div>
         <div className="space-y-6 bg-white p-2 shadow-md" >
           <div className="flex justify-between items-start" >
@@ -67,16 +67,16 @@ export function OrderSummary({ formData, orderNumber, orderDate, invoiceDate }: 
             <h3 className="text-[20px] font-bold mb-2">Items</h3>
             <div className="">
               <div key={"title-row"} className="grid grid-cols-4 gap-0 bg-gray-50 rounded border-gray-100">
-                <p className='col-span-2 flex justify-center text-center text-sm'>Item Name</p>
-                <p className='flex justify-stretch text-sm'>Wgt - KG</p>
+                <p className='col-span-2 flex justify-center text-center text-sm font-bold'>Item Name</p>
+                <p className='flex justify-center text-sm font-bold'>Wgt - KG</p>
                 {/* <p className='flex justify-center text-center text-[12px]'>Bag Size</p> */}
-                <p className='flex justify-center text-center text-sm'>Bag Type</p>
+                <p className='flex justify-center text-center text-sm font-bold'>Bag Type</p>
               </div>
               {formData.items.map((item, index) => (
                 <div key={index} className={`grid grid-cols-4 p-1 mb-1 ${index%2 === 0 ? 'bg-blue-50  border-blue-100' : 'bg-gray-100 border-gray-200'} rounded border-2`}>
-                  <p className={`col-span-2 border-r-2 text-base ${index%2 === 0 ? 'border-blue-200' : 'border-gray-200'}`}>{item.name}</p>
-                  <p className={`border-r-2 text-center text-base ${index%2 === 0 ? 'border-blue-200' : 'border-gray-200'}`}>{item.weight} KG</p>
-                  <div className={`col-span-1 flex flex-col w-full`}>
+                  <p className={`col-span-2 border-r-2 text-base ${index%2 === 0 ? 'border-blue-100' : 'border-gray-200'}`}>{item.name}</p>
+                  <p className={`border-r-2 text-center text-base ${index%2 === 0 ? 'border-blue-100' : 'border-gray-200'}`}>{item.weight} KG</p>
+                  <div className={`col-span-1 flex flex-row w-full`}>
                     <img src={item.isPrinted ? PrintedBag : PlainBag} className='w-12 h-12 self-center' />
                     <p className={`text-[12px] text-center`}>{item.bagSize} <br /> {item.isPrinted ? 'Printed bag' : 'Plain bag'}</p>
                   </div>
