@@ -17,6 +17,53 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
     customer: {name: '', address: '', city: '', state: '', pincode: '', phone: ''},
     items: [{name: '', weight: 0, bagSize: '', isPrinted: true}]
   }
+
+  const calculateBagCount = (value: number, size: number) : {bagSize: number, bagCount: number}[] => {
+    let bagCount = 0;
+    let sizeArray = [5, 10, 20, 30, 50];
+    let selectedIndex = sizeArray.indexOf(size);
+    let selectedSize = sizeArray[selectedIndex];
+    if (value % selectedSize === 0) {
+      bagCount = value / selectedSize;
+    } else if ((value % selectedSize) > selectedSize) {
+      bagCount = Math.floor(value / selectedSize) + 1;
+    } else {
+      bagCount = Math.floor(value / selectedSize);
+      selectedSize = (selectedIndex-1) > 0 && (selectedIndex-1) < sizeArray.length ? sizeArray[selectedIndex - 1] : selectedSize;
+      let nextBag = calculateBagCount((value % selectedIndex), selectedSize);
+      return [{bagSize: selectedSize, bagCount: bagCount}, ...nextBag ];
+    };
+    return [{bagSize: selectedSize, bagCount: bagCount}];
+  }
+  const formatBag = (bagData: {bagSize: number, bagCount: number}[], bagDataSting: string) => {
+    if (bagData.length > 0) {
+      bagData.forEach((aBagData: ({bagSize: number, bagCount: number})) => {
+        bagDataSting = bagDataSting + " " + aBagData.bagSize + " KG bag x " + aBagData.bagCount
+      });
+    }
+    return bagDataSting;
+  }
+  const calculateBagData = (quantity: number) => {
+    let bagDataSting = "";
+    if(quantity >= 3 && quantity <= 5) {
+      let bagData = calculateBagCount(quantity, 5);
+      bagDataSting = formatBag(bagData, bagDataSting);
+    } else if (quantity > 5 && quantity <= 10) {
+      let bagData = calculateBagCount(quantity, 10);
+      bagDataSting = formatBag(bagData, bagDataSting); 
+    } else if (quantity > 10 && quantity <= 20) {
+      let bagData = calculateBagCount(quantity, 20);
+      bagDataSting = formatBag(bagData, bagDataSting); 
+    } else if (quantity > 20 && quantity <= 30) {
+      let bagData = calculateBagCount(quantity, 30);
+      bagDataSting = formatBag(bagData, bagDataSting); 
+    } else if (quantity > 30 && quantity <= 50) {
+      let bagData = calculateBagCount(quantity, 50);
+      bagDataSting = formatBag(bagData, bagDataSting); 
+    } 
+    return bagDataSting;
+  }
+
   if (!file) return jsonData;
 
   const buffer = await file.arrayBuffer();
@@ -123,10 +170,9 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
               weigth = numberTextarray[0] ? Number((numberTextarray[0])?.trim()) : 0;
             }
           }
-
         }
 
-        defaultItem = { name: name, weight: weigth, isPrinted: true, bagSize: '' };
+        defaultItem = { name: name, weight: weigth, isPrinted: true, bagSize: calculateBagData(weigth) };
         aParseArray.push(defaultItem);
       }
     });

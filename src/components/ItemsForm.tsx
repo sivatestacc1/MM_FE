@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { Item } from '../types';
 
@@ -11,6 +11,12 @@ interface ItemsFormProps {
 }
 
 export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFileChange }: ItemsFormProps) {
+  const [bagSizeText, setBagSizeText] = useState({index: -1, text: ""});
+  useEffect(() => {
+    if(bagSizeText.index > -1) {
+      onItemChange(bagSizeText.index, 'isPrinted', bagSizeText.text);
+    }
+  }, [bagSizeText]);
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -24,8 +30,8 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
         </button>
       </div>
       
-      {items.map((item, index) => (
-        <div key={index} className="p-4 border rounded-md space-y-4">
+      {items.map((item, index) => {
+        return (<div key={index} className="p-4 border rounded-md space-y-4">
           <div className="flex justify-between items-start">
             <h3 className="font-medium">Item #{index + 1}</h3>
             <button
@@ -76,7 +82,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
               <input
                 type="text"
                 value={item.bagSize}
-                onChange={(e) => onItemChange(index, 'bagSize', e.target.value)}
+                onChange={(e) => {setBagSizeText({index: index, text: e.target.value})}}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               />
@@ -94,7 +100,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
             </div>
           </div>
         </div>
-      ))}
+      )})}
     </div>
   );
 }
