@@ -186,7 +186,7 @@ export const CreateOrderFromInvoice = () => {
                             Previous
                         </button>
                     )}
-                    {currentStep < 3 ? (
+                    {currentStep < 2 ? (
                         <button
                             type="button"
                             onClick={() => setCurrentStep(currentStep + 1)}

@@ -97,7 +97,7 @@ export const extractTableFromPDF = async (event: React.ChangeEvent<HTMLInputElem
     let addressStartIndex = -1;
     let addressEndIndex = -1;
     allLines?.forEach((aLine, index) => { // filter only needed lines to fetch customer details
-      if (aLine?.includes('#|:')) {
+      if (aLine?.includes('#|:') && !(aLine?.includes('P.O.#|:'))) {
         const [_, data] = aLine?.split('#|:');
         jsonData.invoice.number = data?.trim();
       } else if (aLine?.includes('Invoice Date|:')) {

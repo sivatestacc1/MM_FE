@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { Item } from '../types';
+import { inputFieldStyle } from '../utils/StyleConstants';
 
 interface ItemsFormProps {
   items: Item[];
@@ -61,7 +62,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
                 type="text"
                 value={item.name}
                 onChange={(e) => onItemChange(index, 'name', e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={inputFieldStyle}
                 required
               />
             </div>
@@ -71,7 +72,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
                 type="number"
                 value={item.weight}
                 onChange={(e) => onItemChange(index, 'weight', parseFloat(e.target.value))}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={inputFieldStyle}
                 required
                 min="0"
                 step="0.1"
@@ -83,7 +84,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
                 type="text"
                 value={item.bagSize}
                 onChange={(e) => {setBagSizeText({index: index, text: e.target.value})}}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={inputFieldStyle}
                 required
               />
             </div>

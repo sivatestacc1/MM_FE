@@ -1,5 +1,6 @@
 import React from 'react';
 import { Logistics } from '../types';
+import { inputFieldStyle } from '../utils/StyleConstants';
 
 interface LogisticsFormProps {
   formData: Logistics;
@@ -19,7 +20,7 @@ export function LogisticsForm({ formData, onChange, onFileChange }: LogisticsFor
             name="parcelServiceName"
             value={formData.parcelServiceName}
             onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className={inputFieldStyle}
             required
           />
         </div>
@@ -30,7 +31,7 @@ export function LogisticsForm({ formData, onChange, onFileChange }: LogisticsFor
             name="branch"
             value={formData.branch}
             onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className={inputFieldStyle}
             required
           />
         </div>
@@ -41,7 +42,7 @@ export function LogisticsForm({ formData, onChange, onFileChange }: LogisticsFor
             name="billNumber"
             value={formData.billNumber}
             onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className={inputFieldStyle}
             required
           />
         </div>

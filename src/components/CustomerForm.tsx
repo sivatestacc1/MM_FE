@@ -1,5 +1,6 @@
 import React from 'react';
 import { Customer } from '../types';
+import { inputFieldStyle } from '../utils/StyleConstants';
 
 interface CustomerFormProps {
   formData: Customer;
@@ -18,7 +19,7 @@ export function CustomerForm({ formData, onChange }: CustomerFormProps) {
             name="name"
             value={formData.name}
             onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className={inputFieldStyle}
             required
           />
         </div>
@@ -29,40 +30,7 @@ export function CustomerForm({ formData, onChange }: CustomerFormProps) {
             name="address"
             value={formData.address}
             onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">District</label>
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">State</label>
-          <input
-            type="text"
-            name="state"
-            value={formData.state}
-            onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Pincode</label>
-          <input
-            type="text"
-            name="pincode"
-            value={formData.pincode}
-            onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className={inputFieldStyle}
             required
           />
         </div>
@@ -73,7 +41,7 @@ export function CustomerForm({ formData, onChange }: CustomerFormProps) {
             name="phone"
             value={formData.phone}
             onChange={onChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className={inputFieldStyle}
             required
           />
         </div>
