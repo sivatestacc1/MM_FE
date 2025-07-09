@@ -7,6 +7,7 @@ import { Order, Item, Customer, Logistics } from '../types';
 import { ENDPOINT_URL } from '../constants';
 import { extractTableFromPDF } from '../fileUtil';
 import { FileObject } from '../types';
+import { fileSelectionButtonStyle, primaryButtonStyle, enabledStepButtonStyle, disabledStepButtonStyle, secondaryButtonStyle, formSubmitButtonStyle } from '../utils/StyleConstants';
 
 export const CreateOrderFromInvoice = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -131,10 +132,7 @@ export const CreateOrderFromInvoice = () => {
                     <button
                         key={step}
                         onClick={() => setCurrentStep(step)}
-                        className={`flex-1 text-center py-2 mx-2 rounded-md ${currentStep === step
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-gray-100 text-gray-600'
-                            }`}
+                        className={ currentStep === step ? enabledStepButtonStyle : disabledStepButtonStyle}
                     >
                         Step {step}
                     </button>
@@ -151,7 +149,7 @@ export const CreateOrderFromInvoice = () => {
                           name="billCopy"
                           onChange={handleFileChange}
                           accept=".pdf,.jpg,.jpeg,.png"
-                          className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                          className={fileSelectionButtonStyle}
                           required
                         />
                       </div>)
@@ -181,27 +179,28 @@ export const CreateOrderFromInvoice = () => {
                         <button
                             type="button"
                             onClick={() => setCurrentStep(currentStep - 1)}
-                            className="px-4 py-2 text-blue-500 hover:text-blue-600"
+                            className={secondaryButtonStyle}
                         >
                             Previous
                         </button>
                     )}
-                    {currentStep < 2 ? (
+                    {(currentStep < 2 && isInvoiceSelected) ? (
                         <button
                             type="button"
                             onClick={() => setCurrentStep(currentStep + 1)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 ml-auto"
+                            className={ primaryButtonStyle }
                         >
                             Next
                         </button>
-                    ) : (
+                    ) : isInvoiceSelected ? (
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 ml-auto"
+                            className={ formSubmitButtonStyle }
                         >
                             Submit Order
                         </button>
-                    )}
+                        ) : (<></>)
+                    }
                 </div>
             </form>
         </div>

@@ -5,6 +5,7 @@ import { LogisticsForm } from './LogisticsForm';
 import { OrderSummary } from './OrderSummary';
 import { Order, Item } from '../types';
 import { ENDPOINT_URL } from '../constants';
+import { primaryButtonStyle, enabledStepButtonStyle, disabledStepButtonStyle, secondaryButtonStyle, formSubmitButtonStyle } from '../utils/StyleConstants';
 function CreateNewOrder() {
   const [currentStep, setCurrentStep] = useState(1);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
@@ -128,11 +129,7 @@ function CreateNewOrder() {
               <button
                 key={step}
                 onClick={() => setCurrentStep(step)}
-                className={`flex-1 text-center py-2 mx-2 rounded-md ${
-                  currentStep === step
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 text-gray-600'
-                }`}
+                className={ currentStep === step ? enabledStepButtonStyle : disabledStepButtonStyle}
               >
                 Step {step}
               </button>
@@ -167,7 +164,7 @@ function CreateNewOrder() {
                 <button
                   type="button"
                   onClick={() => setCurrentStep(currentStep - 1)}
-                  className="px-4 py-2 text-blue-500 hover:text-blue-600"
+                  className={ secondaryButtonStyle }
                 >
                   Previous
                 </button>
@@ -176,14 +173,14 @@ function CreateNewOrder() {
                 <button
                   type="button"
                   onClick={() => setCurrentStep(currentStep + 1)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 ml-auto"
+                  className={primaryButtonStyle}
                 >
                   Next
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 ml-auto"
+                  className= { formSubmitButtonStyle }
                 >
                   Submit Order
                 </button>

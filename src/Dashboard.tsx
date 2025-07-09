@@ -6,6 +6,7 @@ import ListOfOrders from "./components/ListOfOrders";
 import { CreateOrderFromInvoice } from "./components/CreateOrderFromInvoice";
 import { ENDPOINT_URL } from "./constants";
 import Loader from "./components/Loader";
+import { enabledStepButtonStyle } from "./utils/StyleConstants";
 
 function Dashboard() {
     const [showOrdersList, setShowOrdersList] = useState(false);
@@ -51,7 +52,7 @@ function Dashboard() {
                     <button
                             key={"back"}
                             onClick={() => {setShowOrdersList(false); setShowCreateOrderForm(false); setShowCreateOrderFromInvoice(false)}}
-                            className={`flex-1 text-center py-2 mx-2 px-4 rounded-md bg-blue-500 text-white`}
+                            className={ enabledStepButtonStyle }
                         >
                             Back
                     </button>
