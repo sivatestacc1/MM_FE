@@ -173,14 +173,14 @@ function CreateNewOrder() {
                 <button
                   type="button"
                   onClick={() => setCurrentStep(currentStep + 1)}
-                  className={primaryButtonStyle}
+                  className={"ml-auto " + primaryButtonStyle}
                 >
                   Next
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className= { formSubmitButtonStyle }
+                  className= {"ml-auto " +  formSubmitButtonStyle }
                 >
                   Submit Order
                 </button>

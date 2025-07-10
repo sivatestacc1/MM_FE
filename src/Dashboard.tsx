@@ -6,7 +6,8 @@ import ListOfOrders from "./components/ListOfOrders";
 import { CreateOrderFromInvoice } from "./components/CreateOrderFromInvoice";
 import { ENDPOINT_URL } from "./constants";
 import Loader from "./components/Loader";
-import { enabledStepButtonStyle } from "./utils/StyleConstants";
+import { cardStyle, primaryButtonStyle, secondaryButtonStyle } from "./utils/StyleConstants";
+import HomeIcon from './asset/img/home.png';
 
 function Dashboard() {
     const [showOrdersList, setShowOrdersList] = useState(false);
@@ -49,36 +50,36 @@ function Dashboard() {
                 {!isBEReady && <Loader />}
                 {isBEReady && <div>
                 {((showOrdersList || showCreateOrderForm || showCreateOrderFromInvoice))&& <div className="container text-left pb-8">
-                    <button
-                            key={"back"}
+                    <button key={"back"}
                             onClick={() => {setShowOrdersList(false); setShowCreateOrderForm(false); setShowCreateOrderFromInvoice(false)}}
-                            className={ enabledStepButtonStyle }
-                        >
-                            Back
+                            className={"inline-flex " + secondaryButtonStyle }>
+                        
+                    <img src={HomeIcon} className='w-6 h-6 self-center' />
+ 
                     </button>
                 </div>}
 
-                <div className={`${!showOrdersList ? 'bg-white shadow-md rounded-lg p-6' : ''}`}>
-                    {(!showCreateOrderForm && !showOrdersList && !showCreateOrderFromInvoice) && <div className="my-4 flex justify-between">
+                <div className={`${!showOrdersList ? '' : ''}`}>
+                    {(!showCreateOrderForm && !showOrdersList && !showCreateOrderFromInvoice) && <div className={"grid md:grid-flow-col grid-flow-row md:gap-4 gap-6 " + cardStyle}>
                         <h4 className="mt-2 text-1xl font-bold text-gray-900">Select Menu</h4>
                         <button
                             key={"orders"}
                             onClick={() => { setShowOrdersList(true);}}
-                            className={`flex-1 text-center py-2 mx-2 rounded-md bg-yellow-300 text-red-600`}
+                            className={"flex-1 text-center py-2 mx-2 " + primaryButtonStyle}
                         >
                             View Orders
                         </button>
                         <button
                             key={"CreateUsingInvoice"}
                             onClick={() => {setShowCreateOrderFromInvoice(true)}}
-                            className={`flex-1 text-center py-2 mx-2 rounded-md bg-yellow-300 text-red-600`}
+                            className={"flex-1 text-center py-2 mx-2 " + primaryButtonStyle}
                         >
                             Create Order Using Invoice
                         </button>
                         <button
                             key={"Create"}
                             onClick={() => {setShowCreateOrderForm(true)}}
-                            className={`flex-1 text-center py-2 mx-2 rounded-md bg-yellow-300 text-red-600`}
+                            className={"flex-1 text-center py-2 mx-2 " + primaryButtonStyle}
                         >
                             Create New Order
                         </button>

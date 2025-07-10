@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { Item } from '../types';
-import { inputFieldStyle } from '../utils/StyleConstants';
+import { cardStyle, inputFieldStyle } from '../utils/StyleConstants';
 
 interface ItemsFormProps {
   items: Item[];
@@ -19,7 +19,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
     }
   }, [bagSizeText]);
   return (
-    <div className="space-y-4">
+    <div className={"space-y-8 mt-8 " + cardStyle}>
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Items</h2>
         <button
@@ -32,7 +32,7 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
       </div>
       
       {items.map((item, index) => {
-        return (<div key={index} className="p-4 border rounded-md space-y-4">
+        return (<div key={index} className="p-4 border-2 rounded-md space-y-4">
           <div className="flex justify-between items-start">
             <h3 className="font-medium">Item #{index + 1}</h3>
             <button

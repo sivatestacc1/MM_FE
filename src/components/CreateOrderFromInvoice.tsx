@@ -7,7 +7,7 @@ import { Order, Item, Customer, Logistics } from '../types';
 import { ENDPOINT_URL } from '../constants';
 import { extractTableFromPDF } from '../fileUtil';
 import { FileObject } from '../types';
-import { fileSelectionButtonStyle, primaryButtonStyle, enabledStepButtonStyle, disabledStepButtonStyle, secondaryButtonStyle, formSubmitButtonStyle } from '../utils/StyleConstants';
+import { fileSelectionButtonStyle, primaryButtonStyle, enabledStepButtonStyle, disabledStepButtonStyle, secondaryButtonStyle, formSubmitButtonStyle, cardStyle } from '../utils/StyleConstants';
 
 export const CreateOrderFromInvoice = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -142,7 +142,7 @@ export const CreateOrderFromInvoice = () => {
             <form onSubmit={handleSubmit} className="space-y-8">
                 {currentStep === 1 &&  
                     !isInvoiceSelected ?
-                    (<div>
+                    (<div className={cardStyle}>
                         <label className="block text-sm font-medium text-gray-700">Bill Copy</label>
                         <input
                           type="file"
@@ -188,14 +188,14 @@ export const CreateOrderFromInvoice = () => {
                         <button
                             type="button"
                             onClick={() => setCurrentStep(currentStep + 1)}
-                            className={ primaryButtonStyle }
+                            className={"ml-auto " + primaryButtonStyle}
                         >
                             Next
                         </button>
                     ) : isInvoiceSelected ? (
                         <button
                             type="submit"
-                            className={ formSubmitButtonStyle }
+                            className={"ml-auto " +  formSubmitButtonStyle }
                         >
                             Submit Order
                         </button>

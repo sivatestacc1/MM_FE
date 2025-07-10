@@ -1,6 +1,6 @@
 import React from 'react';
 import { Customer } from '../types';
-import { inputFieldStyle } from '../utils/StyleConstants';
+import { cardStyle, inputFieldStyle } from '../utils/StyleConstants';
 
 interface CustomerFormProps {
   formData: Customer;
@@ -9,7 +9,7 @@ interface CustomerFormProps {
 
 export function CustomerForm({ formData, onChange }: CustomerFormProps) {
   return (
-    <div className="space-y-4">
+    <div className={"space-y-8 " + cardStyle}>
       <h2 className="text-xl font-semibold">Customer Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
