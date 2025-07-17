@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { Item } from '../types';
 import { cardStyle, inputFieldStyle } from '../utils/StyleConstants';
+import { calculateBagData } from '../fileUtil';
 
 interface ItemsFormProps {
   items: Item[];
@@ -12,12 +13,15 @@ interface ItemsFormProps {
 }
 
 export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFileChange }: ItemsFormProps) {
-  const [bagSizeText, setBagSizeText] = useState({index: -1, text: ""});
-  useEffect(() => {
-    if(bagSizeText.index > -1) {
-      onItemChange(bagSizeText.index, 'isPrinted', bagSizeText.text);
+  const [quantity, setQuantity] = useState({index: -1, value: 0});
+  const [bagSizeText, setBagSizeText] = useState({index: -1, value: ""});
+  useEffect(()=>{
+    if(quantity.index > -1 && quantity.value > 0) {
+      let aText = calculateBagData(quantity.value);
+      setBagSizeText({index: quantity.index, value: aText});
+      onItemChange(quantity.index, "bagSize", aText);
     }
-  }, [bagSizeText]);
+  }, [quantity])
   return (
     <div className={"space-y-8 mt-8 " + cardStyle}>
       <div className="flex justify-between items-center">
@@ -71,7 +75,13 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
               <input
                 type="number"
                 value={item.weight}
-                onChange={(e) => onItemChange(index, 'weight', parseFloat(e.target.value))}
+                onChange={(e) => {
+                  onItemChange(index, 'weight', parseFloat(e.target.value));
+                }}
+                onBlur={(e) => {
+                  let aValue = parseFloat(e.target.value);
+                  setQuantity({index: index, value: aValue});
+                }}
                 className={inputFieldStyle}
                 required
                 min="0"
@@ -82,8 +92,8 @@ export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFile
               <label className="block text-sm font-medium text-gray-700">Bag Size</label>
               <input
                 type="text"
-                value={item.bagSize}
-                onChange={(e) => {setBagSizeText({index: index, text: e.target.value})}}
+                value={bagSizeText.index === index ? bagSizeText.value : item.bagSize}
+                onChange={(e) => onItemChange(index, 'bagSize', e.target.value)}
                 className={inputFieldStyle}
                 required
               />

@@ -78,7 +78,7 @@ export function OrderSummary({ formData, orderNumber, orderDate, invoiceDate }: 
                   <p className={`border-r-2 text-center text-base ${index%2 === 0 ? 'border-blue-100' : 'border-gray-200'}`}>{item.weight} KG</p>
                   <div className={`col-span-1 flex flex-row w-full`}>
                     <img src={item.isPrinted ? PrintedBag : PlainBag} className='w-12 h-12 self-center' />
-                    <p className={`text-[12px] text-center`}>{item.bagSize} <br /> {item.isPrinted ? 'Printed bag' : 'Plain bag'}</p>
+                    <p className={`text-[12px] text-center`}>{item.bagSize} <br /> <p className='text-pink-600'>{item.isPrinted ? 'Printed bag' : 'Plain bag'}</p></p>
                   </div>
                 </div>
               ))}
