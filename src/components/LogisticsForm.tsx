@@ -4,6 +4,7 @@ import { cardStyle, inputFieldStyle } from '../utils/StyleConstants';
 import { fileSelectionButtonStyle } from '../utils/StyleConstants';
 import { SearchableDropdown, DropdownItem } from './SearchableDropdown';
 import { getRandomInt } from '../utils/Util';
+import { ENDPOINT_URL } from '../constants';
 
 interface LogisticsFormProps {
   formData: Logistics;
@@ -14,24 +15,15 @@ interface LogisticsFormProps {
 
 interface DataSet {
   id: string;
-  label: string;
-  value: string;
+  parcelService: string;
+  branch: string;
 }
 
 export function LogisticsForm({ formData, onChange, onInputChange, onFileChange }: LogisticsFormProps) {
 
-  const [items, setItems] = useState<DataSet[]>([
-    { id: '1', label: 'Apple', value: '111' },
-    { id: '1a', label: 'Apple', value: '112' },
-    { id: '1b', label: 'Apple', value: '113' },
-    { id: '2', label: 'Banana', value: '222' },
-    { id: '3', label: 'Cherry', value: '333' },
-    { id: '4', label: 'Date', value: '444' },
-    { id: '5', label: 'Elderberry', value: '555' },
-    { id: '6', label: 'Fig', value: '666' },
-    { id: '7', label: 'Grape', value: '777' },
-    { id: '8', label: 'Honeydew', value: '888' },
-  ]);
+  
+
+  const [items, setItems] = useState<DataSet[]>([]);
 
   const [selectedParentItem, setSelectedParentItem] = useState<DropdownItem | null>(null);
   const [selectedChildItem, setSelectedChildItem] = useState<DropdownItem | null>(null);
@@ -39,14 +31,37 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
   const [childItems, setChildItems] = useState<DropdownItem[]>([]);
   const [tempParent, setTempParent] = useState<DataSet | null>(null);
 
+  const fetchLogistics = async () => {
+    try {
+                const response = await fetch(ENDPOINT_URL + "/api/logistics",
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                )
+                if (!response.ok) throw new Error('Failed to fetch orders');
+                const data = await response.json();
+                let aData = JSON.parse(JSON.stringify(data));
+                setItems(aData);
+            } catch (err) {
+                //
+            } finally {
+                //
+            }
+  }
+
+  useEffect(() => { fetchLogistics() }, []);
+
   const handleParentItemAdd = (newItem: DropdownItem) => {
     const randomInt: number = getRandomInt(0, 1000);
-    setTempParent({ id: randomInt.toString(), label: newItem.value, value: "" })
+    setTempParent({ id: randomInt.toString(), parcelService: newItem.value, branch: "" });
   };
 
   const handleChildItemAdd = (newItem: DropdownItem) => {
     if (tempParent) {
-      let dataItem = { ...tempParent, value: newItem.value }
+      let dataItem = { ...tempParent, branch: newItem.value }
       setTempParent(dataItem);
       setItems([...items, dataItem]);
       setTempParent(null);
@@ -56,9 +71,9 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
   useEffect(() => {
     let parents: DropdownItem[] = [];
     items.forEach((aItem) => {
-      if ((parents.filter(i => aItem.label === i.value)).length === 0) {
+      if ((parents.filter(i => aItem.parcelService === i.value)).length === 0) {
         const randomInt: number = getRandomInt(0, 1000);
-        parents.push({ id: randomInt.toString(), value: aItem.label })
+        parents.push({ id: randomInt.toString(), value: aItem.parcelService })
       }
     })
     setParentItems(parents);
@@ -68,9 +83,9 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
     if (selectedParentItem) {
       let children: DropdownItem[] = [];
       items.forEach((aItem) => {
-        if (aItem.label === selectedParentItem.value) {
+        if (aItem.parcelService === selectedParentItem.value) {
           const randomInt: number = getRandomInt(0, 1000);
-          children.push({ id: randomInt.toString(), value: aItem.value })
+          children.push({ id: randomInt.toString(), value: aItem.branch })
         }
       });
       setChildItems(children);
@@ -88,7 +103,7 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
           {parentItems.length > 0 && <SearchableDropdown
             items={parentItems}
             selectedItem={selectedParentItem}
-            onItemSelect={(item) => { onChange({ name: "parcelServiceName", value: item.value }); setSelectedParentItem(item); }}
+            onItemSelect={(item) => { onChange({ name: "parcelServiceName", value: item.value }); setSelectedParentItem(item); setSelectedChildItem(null);}}
             onItemsChange={handleParentItemAdd}
             placeholder="Choose a parcel service..."
             allowAddNew={true}
