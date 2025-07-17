@@ -47,8 +47,12 @@ export const CreateOrderFromInvoice = () => {
         setFormData({ ...formData, customer: { ...formData.customer, [e.target.name]: e.target.value } });
     };
 
-    const handleLogisticsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, logistics: { ...formData.logistics, [e.target.name]: e.target.value } });
+    }
+    
+    const handleLogisticsChange = (e: {name:string, value: string}) => {
+        setFormData({ ...formData, logistics: { ...formData.logistics, [e.name]: e.value } });
     };
 
     const handleItemChange = (index: number, field: keyof Item, value: string | number | boolean) => {
@@ -169,6 +173,7 @@ export const CreateOrderFromInvoice = () => {
                 {currentStep === 2 && (
                     <LogisticsForm
                         formData={formData?.logistics}
+                        onInputChange={handleInputChange}
                         onChange={handleLogisticsChange}
                         onFileChange={()=>{}}
                     />
