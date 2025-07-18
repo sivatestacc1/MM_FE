@@ -143,7 +143,7 @@ export const CreateOrderFromInvoice = () => {
                 ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="space-y-8">
                 {currentStep === 1 &&  
                     !isInvoiceSelected ?
                     (<div className={cardStyle}>
@@ -165,7 +165,7 @@ export const CreateOrderFromInvoice = () => {
                         onItemChange={handleItemChange}
                         onAddItem={handleAddItem}
                         onRemoveItem={handleRemoveItem}
-                        onFileChange={handleFileChange}
+                        // onFileChange={handleFileChange}
                     />
                     </div>)
                 }
@@ -175,7 +175,7 @@ export const CreateOrderFromInvoice = () => {
                         formData={formData?.logistics}
                         onInputChange={handleInputChange}
                         onChange={handleLogisticsChange}
-                        onFileChange={()=>{}}
+                        // onFileChange={()=>{}}
                     />
                 )}
 
@@ -201,13 +201,14 @@ export const CreateOrderFromInvoice = () => {
                         <button
                             type="submit"
                             className={"ml-auto " +  formSubmitButtonStyle }
+                            onClick={handleSubmit}
                         >
                             Submit Order
                         </button>
                         ) : (<></>)
                     }
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 }

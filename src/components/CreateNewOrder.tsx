@@ -73,11 +73,11 @@ function CreateNewOrder() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setFormData({ ...formData, logistics: {...formData?.logistics, billCopy: e.target.files[0]} });
+  //   }
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,7 +140,7 @@ function CreateNewOrder() {
             ))}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-8">
             {currentStep === 1 && (
               <CustomerForm formData={formData?.customer} onChange={handleCustomerChange} />
             )}
@@ -151,7 +151,7 @@ function CreateNewOrder() {
                 onItemChange={handleItemChange}
                 onAddItem={handleAddItem}
                 onRemoveItem={handleRemoveItem}
-                onFileChange={handleFileChange}
+                // onFileChange={handleFileChange}
               />
             )}
 
@@ -160,7 +160,7 @@ function CreateNewOrder() {
                 formData={formData?.logistics}
                 onInputChange={handleInputChange}
                 onChange={handleLogisticsChange}
-                onFileChange={handleFileChange}
+                // onFileChange={handleFileChange}
               />
             )}
 
@@ -186,12 +186,13 @@ function CreateNewOrder() {
                 <button
                   type="submit"
                   className= {"ml-auto " +  formSubmitButtonStyle }
+                  onClick={handleSubmit}
                 >
                   Submit Order
                 </button>
               )}
             </div>
-          </form>
+          </div>
         </div>
       </div>
   );

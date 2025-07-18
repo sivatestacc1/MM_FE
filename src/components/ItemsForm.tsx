@@ -9,10 +9,10 @@ interface ItemsFormProps {
   onItemChange: (index: number, field: keyof Item, value: string | number | boolean) => void;
   onAddItem: () => void;
   onRemoveItem: (index: number) => void;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem, onFileChange }: ItemsFormProps) {
+export function ItemsForm({ items, onItemChange, onAddItem, onRemoveItem/*, onFileChange*/ }: ItemsFormProps) {
   const [quantity, setQuantity] = useState({index: -1, value: 0});
   const [bagSizeText, setBagSizeText] = useState({index: -1, value: ""});
   useEffect(()=>{

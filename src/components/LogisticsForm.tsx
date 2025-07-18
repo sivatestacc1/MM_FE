@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Logistics } from '../types';
 import { cardStyle, inputFieldStyle } from '../utils/StyleConstants';
-import { fileSelectionButtonStyle } from '../utils/StyleConstants';
+// import { fileSelectionButtonStyle } from '../utils/StyleConstants';
 import { SearchableDropdown, DropdownItem } from './SearchableDropdown';
 import { getRandomInt } from '../utils/Util';
 import { ENDPOINT_URL } from '../constants';
@@ -10,7 +10,7 @@ interface LogisticsFormProps {
   formData: Logistics;
   onChange: (e: { name: string, value: string }) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface DataSet {
@@ -19,7 +19,7 @@ interface DataSet {
   branch: string;
 }
 
-export function LogisticsForm({ formData, onChange, onInputChange, onFileChange }: LogisticsFormProps) {
+export function LogisticsForm({ formData, onChange, onInputChange/*, onFileChange*/ }: LogisticsFormProps) {
 
   const [items, setItems] = useState<DataSet[]>([]);
   const [selectedParentItem, setSelectedParentItem] = useState<DropdownItem | null>(null);
@@ -92,6 +92,7 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
       }
     })
     setParentItems(parents);
+    setChildItems([]);
   }, [items])
 
   useEffect(() => {
@@ -118,20 +119,17 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
           {parentItems.length > 0 && <SearchableDropdown
             items={parentItems}
             selectedItem={selectedParentItem}
-            onItemSelect={(item) => { onChange({ name: "parcelServiceName", value: item.value }); setSelectedParentItem(item); setSelectedChildItem(null);}}
+            onItemSelect={(item) => { 
+              onChange({ name: "parcelServiceName", value: item.value }); 
+              setSelectedParentItem(item); 
+              setSelectedChildItem(null);
+              setChildItems([]);
+            }}
             onItemsChange={handleParentItemAdd}
             placeholder="Choose a parcel service..."
             allowAddNew={true}
             maxHeight="150px"
           />}
-          {/* <input
-            type="text"
-            name="parcelServiceName"
-            value={formData.parcelServiceName}
-            onChange={onChange}
-            className={inputFieldStyle}
-            required
-          /> */}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Service Branch</label>
@@ -144,14 +142,6 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
             allowAddNew={true}
             maxHeight="150px"
           />}
-          {/* <input
-            type="text"
-            name="branch"
-            value={formData.branch}
-            onChange={onChange}
-            className={inputFieldStyle}
-            required
-          /> */}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Bill Number</label>
@@ -164,7 +154,7 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
             required
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700">Bill Copy</label>
           <input
             type="file"
@@ -174,7 +164,7 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
             className={fileSelectionButtonStyle}
             required
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
