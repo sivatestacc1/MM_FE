@@ -21,10 +21,7 @@ interface DataSet {
 
 export function LogisticsForm({ formData, onChange, onInputChange, onFileChange }: LogisticsFormProps) {
 
-  
-
   const [items, setItems] = useState<DataSet[]>([]);
-
   const [selectedParentItem, setSelectedParentItem] = useState<DropdownItem | null>(null);
   const [selectedChildItem, setSelectedChildItem] = useState<DropdownItem | null>(null);
   const [parentItems, setParentItems] = useState<DropdownItem[]>([]);
@@ -33,26 +30,41 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
 
   const fetchLogistics = async () => {
     try {
-                const response = await fetch(ENDPOINT_URL + "/api/logistics",
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                )
-                if (!response.ok) throw new Error('Failed to fetch orders');
-                const data = await response.json();
-                let aData = JSON.parse(JSON.stringify(data));
-                setItems(aData);
-            } catch (err) {
-                //
-            } finally {
-                //
-            }
+      const response = await fetch(ENDPOINT_URL + "/api/logistics",
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      if (!response.ok) throw new Error('Failed to fetch logistics');
+      const data = await response.json();
+      let aData = JSON.parse(JSON.stringify(data));
+      setItems(aData);
+    } catch (err) {
+      console.log("Fetch logistics data error ", err);
+    }
   }
 
-  useEffect(() => { fetchLogistics() }, []);
+  const createLogistic = async (newItem: DataSet) => {
+    try {
+      const response = await fetch(ENDPOINT_URL + "/api/logistics",
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body : JSON.stringify({parcelService: newItem.parcelService, branch: newItem.branch})
+        }
+      )
+      if (!response.ok) throw new Error('Failed to create logistic');
+      setItems([...items, newItem]);
+      setTempParent(null);
+    } catch (err) {
+      console.log("Error, can't create logistic item ", err);
+    }
+  }
 
   const handleParentItemAdd = (newItem: DropdownItem) => {
     const randomInt: number = getRandomInt(0, 1000);
@@ -60,13 +72,16 @@ export function LogisticsForm({ formData, onChange, onInputChange, onFileChange 
   };
 
   const handleChildItemAdd = (newItem: DropdownItem) => {
-    if (tempParent) {
-      let dataItem = { ...tempParent, branch: newItem.value }
+    const randomInt: number = getRandomInt(0, 1000);
+    let aParent = tempParent ? tempParent : selectedParentItem ? { id: randomInt.toString(), parcelService: selectedParentItem.value, branch: "" } : null;
+    if (aParent) {
+      let dataItem = { ...aParent, branch: newItem.value }
       setTempParent(dataItem);
-      setItems([...items, dataItem]);
-      setTempParent(null);
+      createLogistic(dataItem);
     }
   }
+
+  useEffect(() => { fetchLogistics() }, []);
 
   useEffect(() => {
     let parents: DropdownItem[] = [];
