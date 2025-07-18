@@ -1,5 +1,5 @@
 // import React from "react";
-import { Package } from "lucide-react";
+// import { Package } from "lucide-react";
 import { useEffect, useState } from "react";
 import CreateNewOrder from "./components/CreateNewOrder";
 import ListOfOrders from "./components/ListOfOrders";
@@ -8,6 +8,7 @@ import { ENDPOINT_URL } from "./constants";
 import Loader from "./components/Loader";
 import { cardStyle, primaryButtonStyle, secondaryButtonStyle } from "./utils/StyleConstants";
 import HomeIcon from './asset/img/home.png';
+import LogoImg from './asset/img/logo.png';
 
 function Dashboard() {
     const [showOrdersList, setShowOrdersList] = useState(false);
@@ -44,7 +45,8 @@ function Dashboard() {
         <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-8">
-                    <Package className="mx-auto h-12 w-12 text-blue-500" />
+                    <img className="mx-auto h-24 w-140 text-blue-500" src={LogoImg} />
+                    {/* <Package className="mx-auto h-12 w-12 text-blue-500" /> */}
                     <h1 className="mt-4 text-3xl font-bold text-gray-900">Order Management System</h1>
                 </div>
                 {!isBEReady && <Loader />}
