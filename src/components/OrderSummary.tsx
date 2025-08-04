@@ -88,10 +88,11 @@ export function OrderSummary({ formData, orderNumber, orderDate, invoiceDate }: 
           <div className="border-t pt-4">
             <h3 className="text-[20px] font-bold mb-2">Logistics Information</h3>
             <div className="grid grid-cols-1 gap-0 p-4">
-              <p><span className="text-gray-600">Service:</span> {formData.logistics.parcelServiceName}</p>
-              <p><span className="text-gray-600">Branch:</span> {formData.logistics.branch}</p>
+              <p><span className="text-gray-600">Customer Name:</span> <span className="font-bold">{formData.customer.name}</span></p>
+              <p><span className="text-gray-600">Parcel Service:</span> <span className="font-bold">{formData.logistics.parcelServiceName}</span></p>
+              <p><span className="text-gray-600">Branch:</span> <span className="font-bold">{formData.logistics.branch}</span></p>
               <p><span className="text-gray-600">Bill Number:</span> {formData.logistics.billNumber}</p>
-              <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p>
+              {/* <p><span className="text-gray-600">Bill Copy:</span> {formData.logistics.billCopy?.name || 'Not attached'}</p> */}
             </div>
           </div>
         </div>
